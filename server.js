@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-
+const productspage = require("./routes/products")
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -14,13 +14,10 @@ app.use(cors({
 }));
 
 
+app.use("/data",productspage);
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Express Server is running smoothly!'
-  });
-});
+
+
 
 
 app.listen(PORT, () => {
