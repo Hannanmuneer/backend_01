@@ -5,13 +5,19 @@ const productspage = require("./routes/products")
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(express.json());
 
-
+const allowedOrigins = [
+  "https://shop-co-hannan4.vercel.app",
+  "http://localhost:5173"
+];
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: allowedOrigins,
   credentials: true
 }));
+
+
 
 
 app.use("/data",productspage);
@@ -19,7 +25,6 @@ app.use("/data",productspage);
 
 
 
-
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode.`);
+  console.log(`Server is running on port ${PORT}`);
 });
