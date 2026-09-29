@@ -9,6 +9,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "https://shop-co-hannan4.vercel.app",
+  'https://shop-co.vercel.app',
   "http://localhost:5173"
 ];
 
