@@ -32,7 +32,7 @@ app.use(cors({
 }));
 
 // Pre-flight requests ko explicitly allow karein
-app.options('*', cors());
+app.options('/*', cors());
 
 
 app.use("/data",productspage);
