@@ -13,27 +13,31 @@ const allowedOrigins = [
   "http://localhost:5173"
 ];
 
+// CORS Middleware Configuration
 app.use(cors({
-  origin: (origin, callback) => {
-    // Postman ya direct server requests (jaha origin undefined hota hai) allow hongi
+  origin: function (origin, callback) {
+    // Postman ya server-to-server requests allowed hain
     if (!origin) return callback(null, true);
 
-    // Dynamic vercel preview links match karne ke liye includes ya regex check
-    const isAllowed = allowedOrigins.some(o => origin === o || origin.endsWith(".vercel.app"));
-
-    if (isAllowed) {
-      callback(null, true);
+    // Exact origin match check
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      return callback(new Error('CORS Policy restriction'));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// Pre-flight requests ko explicitly allow karein
+app.options('*', cors());
 
 
 app.use("/data",productspage);
 
 
-app.listen(PORT,'0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0' , () => {
   console.log(`Server is running on port ${PORT}`);
 });
