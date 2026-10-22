@@ -28,9 +28,7 @@ const upload = multer({storage:multer.memoryStorage()})
 
 const allowedOrigins = [
   "https://shop-co-hannan4.vercel.app",
-  "https://shop-co.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:5174"
+  "https://shop-co.vercel.app"
 ];
 
 
