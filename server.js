@@ -28,7 +28,8 @@ const upload = multer({storage:multer.memoryStorage()})
 
 const allowedOrigins = [
   "https://shop-co-hannan4.vercel.app",
-  "https://shop-co.vercel.app"
+  "https://shop-co.vercel.app",
+  "https://shopco-dashboard-delta.vercel.app"
 ];
 
 
@@ -414,12 +415,12 @@ app.delete("/delete-product/:id", verifyAdmin, async (req, res) => {
 //   console.log(`Server running on port ${PORT}`);
 // });
 
-// Local computer par server chalane ke liye
+
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server running on port ${PORT}`);
     });
 }
 
-// Vercel ke liye app export karna lazmi hai (Kahin aur import nahi karna, Vercel khud utha lega)
+
 module.exports = app;
