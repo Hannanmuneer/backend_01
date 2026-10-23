@@ -31,22 +31,38 @@ const allowedOrigins = [
   "https://shop-co.vercel.app"
 ];
 
-
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
-    
     if (!origin) return callback(null, true);
-    
     if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       return callback(null, true);
-    } else {
-      return callback(new Error('CORS policy restriction'));
     }
+    return callback(null, false); // Error throw mat karo
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+// app.use(cors({
+//   origin: (origin, callback) => {
+    
+//     if (!origin) return callback(null, true);
+    
+//     if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+//       return callback(null, true);
+//     } else {
+//       return callback(new Error('CORS policy restriction'));
+//     }
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
 
 const generateCustomId = async () => {
     const lastProduct = await ProductSchema.findOne().sort({ id: -1 });
