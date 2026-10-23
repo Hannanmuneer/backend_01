@@ -410,7 +410,16 @@ app.delete("/delete-product/:id", verifyAdmin, async (req, res) => {
 });
 
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, '0.0.0.0', () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
 
+// Local computer par server chalane ke liye
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+// Vercel ke liye app export karna lazmi hai (Kahin aur import nahi karna, Vercel khud utha lega)
+module.exports = app;
