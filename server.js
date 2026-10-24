@@ -369,47 +369,33 @@ app.get("/getallproducts", async (req, res) => {
 });
 
 
-app.delete("/delete-product/:id", verifyAdmin, async (req, res) => {
+app.delete("/delete-order/:id", verifyAdmin, async (req, res) => {
     try {
         const targetId = req.params.id;
-        let deletedProduct = null;
+        let deletedOrder = null;
 
         
         try {
-            deletedProduct = await ProductSchema.findByIdAndDelete(targetId);
+            deletedOrder = await ordersschema.findByIdAndDelete(targetId);
         } catch (e) { }
 
-        if (!deletedProduct) {
-            deletedProduct = await ProductSchema.findOneAndDelete({ 
+        if (!deletedOrder) {
+            deletedOrder = await ordersschema.findOneAndDelete({ 
                 $or: [{ id: targetId }, { id: Number(targetId) }] 
             });
         }
 
-      
-        if (!deletedProduct) {
-            try {
-                deletedProduct = await NewProductSchema.findByIdAndDelete(targetId);
-            } catch (e) {}
+        
+        if (!deletedOrder) {
+            return res.status(404).json({ error: "Order not found in database!" });
         }
 
-        if (!deletedProduct) {
-            deletedProduct = await NewProductSchema.findOneAndDelete({ 
-                $or: [{ id: targetId }, { id: Number(targetId) }] 
-            });
-        }
-
-       
-        if (!deletedProduct) {
-            return res.status(404).json({ error: "Product not found in database!" });
-        }
-
-        res.status(200).json({ message: "Product deleted successfully", deletedProduct });
+        res.status(200).json({ message: "Order deleted successfully", deletedOrder });
     } catch (err) {
-        console.error("Delete Product Error:", err);
+        console.error("Delete Order Error:", err);
         res.status(500).json({ error: err.message });
     }
 });
-
 
 // app.listen(PORT, '0.0.0.0', () => {
 //   console.log(`Server running on port ${PORT}`);
